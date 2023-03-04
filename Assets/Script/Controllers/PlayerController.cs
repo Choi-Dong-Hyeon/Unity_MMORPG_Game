@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     bool moveToDest = false;
     Vector3 destPos;
 
-
+    float wait_run_ratio = 0;
     void Update()
     {
 
@@ -30,6 +30,29 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+
+
+      
+        if (moveToDest)
+        {
+            wait_run_ratio = Mathf.Lerp(wait_run_ratio, 1, 10f * Time.deltaTime);
+            Animator anim = GetComponent<Animator>();
+            anim.SetFloat("wait_run_ratio", wait_run_ratio);
+            anim.Play("WAIT_RUN");
+
+        }
+        else
+        {
+            wait_run_ratio = Mathf.Lerp(wait_run_ratio, 0, 10f * Time.deltaTime);
+            Animator anim = GetComponent<Animator>();
+            anim.SetFloat("wait_run_ratio", wait_run_ratio);
+            anim.Play("WAIT_RUN");
+
+
+        }
+    }
+
+
         //transform.rotation = Quaternion.Euler(new Vector3(0.0f, Angle, 0.0f));
 
         // transform.rotation = Quaternion.Euler(new Vector3(0.0f, Angle, 0.0f));
@@ -38,7 +61,6 @@ public class PlayerController : MonoBehaviour
         //transform.TransformDirection => LocalÁÂÇ¥->WorldÁÂÇ¥·Î º¯È¯ 
         //InverseTransformDirection => WorldÁÂÇ¥->LocalÁÂÇ¥·Î º¯È¯
 
-    }
 
 
 
@@ -54,11 +76,13 @@ public class PlayerController : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent Evt)
     {
-        if (Evt != Define.MouseEvent.Click)
-        {
-            return;
-        }
-        Debug.Log("¸¶¿ì½ºÅ¬¸¯");
+
+
+        //if (Evt != Define.MouseEvent.Click)
+        //{
+        //    return;
+        //}
+        //Debug.Log("¸¶¿ì½ºÅ¬¸¯");
 
 
 
