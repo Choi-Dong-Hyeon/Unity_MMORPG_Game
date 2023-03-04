@@ -4,13 +4,13 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed = 5.0f;
     Vector3 destPos;
-    float wait_run_ratio = 0;
+
     public enum PlayerState
     {
         Die,
         Moving,
         Idle,
-      
+
     }
     PlayerState state = PlayerState.Idle;
 
@@ -57,22 +57,18 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 0.5f * Time.deltaTime);
             transform.LookAt(destPos);//쳐다보는 방향
         }
-        wait_run_ratio = Mathf.Lerp(wait_run_ratio, 1, 10f * Time.deltaTime);
         Animator anim = GetComponent<Animator>();
-        anim.SetFloat("wait_run_ratio", wait_run_ratio);
-        anim.Play("WAIT_RUN");
+
     }
 
     void UpdateIdle()
     {
-        wait_run_ratio = Mathf.Lerp(wait_run_ratio, 0, 10f * Time.deltaTime);
         Animator anim = GetComponent<Animator>();
-        anim.SetFloat("wait_run_ratio", wait_run_ratio);
-        anim.Play("WAIT_RUN");
+
     }
 
     void OnMouseClicked(Define.MouseEvent Evt)
-    { 
+    {
         if (state == PlayerState.Die)
         {
             return;
@@ -85,7 +81,7 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Wall")))
             {
                 destPos = hit.point;
-                state = PlayerState.Moving; 
+                state = PlayerState.Moving;
             }
         }
 
