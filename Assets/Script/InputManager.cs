@@ -1,22 +1,42 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class InputManager 
+public class InputManager
 {
-    public Action KeyAction = null; // 리스너 패턴
+    public Action KeyAction = null;
+    public Action<Define.MouseEvent> mouseAction = null;
 
-   public void OnUpdate()
+    bool pressd=false;
+    public void OnUpdate()
     {
-        if (Input.anyKey == false)
-        {
-            return;
-        }
-        if(KeyAction != null)
+        if (Input.anyKey && KeyAction != null)
         {
             KeyAction.Invoke();
         }
-        
+
+
+        if(mouseAction != null)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                mouseAction.Invoke(Define.MouseEvent.Press);
+                pressd = true;
+            }
+            else
+            {
+                if (pressd)
+                {
+                    mouseAction.Invoke(Define.MouseEvent.Click);
+                    pressd = false;
+                }
+            }
+        }
+
+
+
+
     }
 }
