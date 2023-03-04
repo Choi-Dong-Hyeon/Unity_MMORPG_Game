@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed = 5.0f;
     Vector3 destPos;
-
+    float wait_run_ratio = 0;
     public enum PlayerState
     {
         Die,
@@ -16,6 +14,29 @@ public class PlayerController : MonoBehaviour
     }
     PlayerState state = PlayerState.Idle;
 
+    void Start()
+    {
+        Managers.Input.mouseAction -= OnMouseClicked;
+        Managers.Input.mouseAction += OnMouseClicked;
+    }
+    void Update()
+    {
+        switch (state)
+        {
+            case PlayerState.Die:
+                UpdateDie();
+                break;
+
+            case PlayerState.Moving:
+                UpdateMoving();
+                break;
+
+            case PlayerState.Idle:
+                UpdateIdle();
+                break;
+        }
+
+    }
 
 
     void UpdateDie()
@@ -42,42 +63,12 @@ public class PlayerController : MonoBehaviour
         anim.Play("WAIT_RUN");
     }
 
-
-
-
     void UpdateIdle()
     {
         wait_run_ratio = Mathf.Lerp(wait_run_ratio, 0, 10f * Time.deltaTime);
         Animator anim = GetComponent<Animator>();
         anim.SetFloat("wait_run_ratio", wait_run_ratio);
         anim.Play("WAIT_RUN");
-    }
-
-
-    float wait_run_ratio = 0;
-    void Update()
-    {
-        switch (state)
-        {
-            case PlayerState.Die:
-                UpdateDie();
-                break;
-
-            case PlayerState.Moving:
-                UpdateMoving();
-                break;
-
-            case PlayerState.Idle:
-                UpdateIdle();
-                break;
-        }
-
-    }
-
-    void Start()
-    {  
-        Managers.Input.mouseAction -= OnMouseClicked;
-        Managers.Input.mouseAction += OnMouseClicked;
     }
 
     void OnMouseClicked(Define.MouseEvent Evt)
@@ -88,25 +79,20 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             Debug.DrawRay(Camera.main.transform.position, ray.direction * 100f, Color.red, 2.0f);
-
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Wall")))
             {
                 destPos = hit.point;
-                state = PlayerState.Moving;
-
-                
+                state = PlayerState.Moving; 
             }
         }
 
     }
 }
 
-
+#region #움직임 WASD
 //    void OnKeyboard()
 //    {
 //        if (Input.GetKey(KeyCode.W))
@@ -156,3 +142,4 @@ public class PlayerController : MonoBehaviour
 //ayerMask mask = LayerMask.GetMask("Monster") | LayerMask.GetMask("Wall"); //레이어 사용
 //  Managers.Input.KeyAction -= OnKeyboard;
 // Managers.Input.KeyAction += OnKeyboard;
+#endregion
