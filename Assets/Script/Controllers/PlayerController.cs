@@ -4,7 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed = 5.0f;
     Vector3 destPos;
-
+    
     public enum PlayerState
     {
         Die,
@@ -57,14 +57,21 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 0.5f * Time.deltaTime);
             transform.LookAt(destPos);//쳐다보는 방향
         }
+        //애니메이션
         Animator anim = GetComponent<Animator>();
+        //현재 게임상태에 대한 정보를 넘겨준다 
+        anim.SetFloat("speed", speed);
+    }
 
+    void OnRunEvent(int a)
+    {
+        Debug.Log($"뚜벅뚜벅{a}");
     }
 
     void UpdateIdle()
     {
         Animator anim = GetComponent<Animator>();
-
+        anim.SetFloat("speed", 0f);
     }
 
     void OnMouseClicked(Define.MouseEvent Evt)
