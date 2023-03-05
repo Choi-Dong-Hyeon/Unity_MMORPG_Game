@@ -6,6 +6,18 @@ using UnityEngine;
 
 public class Util
 {
+    public static T GetOrAddComponent<T>(GameObject go) where T : UnityEngine.Component
+    {
+        T evtcomponent = go.GetComponent<T>();
+        if (evtcomponent == null)
+        {
+            evtcomponent = go.AddComponent<T>();
+        }
+            return evtcomponent;
+    }
+
+
+
     public static GameObject FindChild(GameObject go, string name = null, bool recursive = false)
     {
         Transform tranform = FindChild<Transform>(go, name, recursive);

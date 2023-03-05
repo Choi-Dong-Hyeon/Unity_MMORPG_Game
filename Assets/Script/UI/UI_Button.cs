@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_Button : UI_Base
@@ -24,22 +25,34 @@ public class UI_Button : UI_Base
     {
         TestObject,
     }
+    enum Images
+    {
+        ItemIcon,
+    }
 
     private void Start()
     {
         Bind<Button>(typeof(Buttons));  //Buttons이름의 컴포넌트에 접근해서 <원하는컴포넌트>에 접근
         Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
+        Bind<Image>(typeof(Images));
 
-        GetText((int)Texts.ScoreText).text = "Binding";
+      
+        GetButton((int)Buttons.PointButton).gameObject.AddUIEvent(OnButtonClicked);
 
+
+        GameObject go = GetImage((int)Images.ItemIcon).gameObject;
+
+        AddUIEvent(go, (PointerEventData data) => { go.gameObject.transform.position = data.position; }, Define.UIEvent.Drag);
+
+       
     }
 
     int score = 0;
-    public void OnButtonClick()
+    public void OnButtonClicked(PointerEventData data)
     {
 
         score++;
-        _text.text = $"점수 : {score}";
+         GetText((int)Texts.ScoreText).text = $"점수 : {score}";
     }
 }
