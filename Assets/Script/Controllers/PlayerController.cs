@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
         Die,
         Moving,
         Idle,
-
+       
     }
     PlayerState state = PlayerState.Idle;
 
@@ -18,9 +18,12 @@ public class PlayerController : MonoBehaviour
     {
         Managers.Input.mouseAction -= OnMouseClicked;
         Managers.Input.mouseAction += OnMouseClicked;
+
+        Managers.resource.Instantiate("UI/Canvas_Button");
     }
     void Update()
     {
+        
         switch (state)
         {
             case PlayerState.Die:
