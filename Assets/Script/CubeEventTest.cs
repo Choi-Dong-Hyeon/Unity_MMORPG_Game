@@ -7,6 +7,6 @@ public class CubeEventTest : MonoBehaviour
 
     void TestEvent()
     {
-        Debug.Log("이벤트 테스트");
+        Debug.Log("클릭 이벤트 테스트");
     }
 }

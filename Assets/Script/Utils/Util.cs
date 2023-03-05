@@ -1,14 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Util
 {
+    public static GameObject FindChild(GameObject go, string name = null, bool recursive = false)
+    {
+        Transform tranform = FindChild<Transform>(go, name, recursive);
+        if (tranform == null)
+        {
+            return null;
+        }
+        return tranform.gameObject;
+    }
+
+
+
+
     public static T FindChild<T>(GameObject go, string name = null, bool recursive = false) where T : UnityEngine.Object
     {
         if (go == null)
-        {
+        { 
             return null;
         }
 
@@ -20,7 +34,7 @@ public class Util
                 if (string.IsNullOrEmpty(name) || transform.name == name)
                 {
                     T component = transform.GetComponent<T>();
-                    if(component != null)
+                    if (component != null)
                     {
                         return component;
                     }
